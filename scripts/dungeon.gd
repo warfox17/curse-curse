@@ -3,7 +3,7 @@ extends Node3D
 var shops = 1
 var traps = 3
 
-var seed = randi()
+var seed
 
 var first_player_escaping = null
 var player_on_the_run = null
@@ -22,6 +22,7 @@ var dungeon_matrix = [
 	]
 
 func _ready() -> void:
+	seed = randi()
 	seed(seed)
 	_generate()
 	_render_map()
@@ -82,12 +83,12 @@ func _gen_exit():
 		_gen_exit()
 
 func next_level():
+	seed(randi())
 	$Timer.stop()
 	dungeon_matrix = [[0,0,0,0,0],[0,0,0,0,0],[0,0,1,0,0],[0,0,0,0,0],[0,0,0,0,0]]
 	for n in map.get_child_count():
 		for i in map.get_child(n).get_children():
 			i.color = Color.BLACK
-	seed(seed+1)
 	_generate()
 	map1.pos = { "x" : 2, "y" : 2}
 	map2.pos = { "x" : 2, "y" : 2}
@@ -101,6 +102,10 @@ func next_level():
 	$Control/end_level_choice1._set_curses()
 	$Control/end_level_choice2.visible = true
 	$Control/end_level_choice2._set_curses()
+	for n in $enemies1.get_children():
+		n.queue_free()
+	for n in $enemies2.get_children():
+		n.queue_free()
 	get_tree().paused = true
 	await get_tree().create_timer(0.4).timeout
 	$Control/end_level_choice1.active = true
