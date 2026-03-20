@@ -1,0 +1,138 @@
+[gd_scene load_steps=11 format=3 uid="uid://d3kr5a45oqv2r"]
+
+[ext_resource type="AudioStream" uid="uid://cji16451gcpp7" path="res://sounds/curses/explosion.ogg" id="1_xjdxb"]
+
+[sub_resource type="GDScript" id="GDScript_c5443"]
+script/source = "extends Node3D
+
+
+func _explode():
+	$AudioStreamPlayer.play()
+	if $Area3D.has_overlapping_bodies():
+		for n in $Area3D.get_overlapping_bodies():
+			if n.is_in_group(\"player\"):
+				n.health._hurt(9)
+				n.momento = -(Vector2(global_position.x,global_position.z) - Vector2(n.position.x,n.position.z)).normalized()
+	await get_tree().create_timer(0.5).timeout
+	queue_free()
+"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qekrk"]
+radius = 1.435
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfxkd"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_mgngk"]
+material = SubResource("StandardMaterial3D_hfxkd")
+radial_segments = 6
+rings = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uox2b"]
+shading_mode = 0
+albedo_color = Color(0.725236, 0.342508, 0.195562, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ge384"]
+material = SubResource("StandardMaterial3D_uox2b")
+radial_segments = 6
+rings = 2
+
+[sub_resource type="Animation" id="Animation_os8wp"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_li0os"]
+resource_name = "i"
+length = 0.6
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.0333333, 1, 0, 0, 0, 0.6, 1, 0, 0.886699, 0)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.6, 1, 0, 0.923468, 0, 0.383675)
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_explode"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MeshInstance3D2:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.0666667, 0.466667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g50kq"]
+_data = {
+&"RESET": SubResource("Animation_os8wp"),
+&"i": SubResource("Animation_li0os")
+}
+
+[node name="explosion" type="Node3D"]
+script = SubResource("GDScript_c5443")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.636604, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_qekrk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_mgngk")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.98623, 0, 1.99477, 0, 2.815, 0, -1.99477, 0, -1.98623, 0, 0.886699, 0)
+visible = false
+mesh = SubResource("SphereMesh_ge384")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_g50kq")
+}
+autoplay = "i"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_xjdxb")
+volume_db = -11.277

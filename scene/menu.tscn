@@ -1,0 +1,138 @@
+[gd_scene load_steps=7 format=3 uid="uid://dpbrkxe84vuyj"]
+
+[ext_resource type="FontFile" uid="uid://c1mv4iadoh0m5" path="res://fonts/yoster.ttf" id="1_bo06a"]
+[ext_resource type="PackedScene" uid="uid://bqqyvat0wsqw5" path="res://model/johnny.tscn" id="2_15se8"]
+[ext_resource type="Texture2D" uid="uid://scb21tn2kk2s" path="res://textures/logo.png" id="2_xs5te"]
+[ext_resource type="PackedScene" uid="uid://cg7kqpvh2y6bl" path="res://model/zombina.tscn" id="3_xs5te"]
+
+[sub_resource type="GDScript" id="GDScript_bo06a"]
+script/source = "extends Node3D
+
+func _process(delta: float) -> void:
+	$p1.rotation.y += Input.get_axis(\"controller_left_left1\",\"controller_left_right1\") * 0.1
+	$p2.rotation.y += Input.get_axis(\"controller_left_left2\",\"controller_left_right2\") * 0.1
+	if Input.is_action_just_released(\"shoot1\"):
+		get_tree().change_scene_to_file(\"res://scene/world.tscn\")
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_vi6sp"]
+font = ExtResource("1_bo06a")
+
+[node name="menu" type="Node3D"]
+script = SubResource("GDScript_bo06a")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -356.0
+offset_top = -1080.0
+offset_right = 356.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 88.62)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_bo06a")
+theme_override_font_sizes/font_size = 66
+text = "play"
+flat = true
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+text = "press r2 on the main controller to play
+(yo need two controllers to play)"
+label_settings = SubResource("LabelSettings_vi6sp")
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.0
+offset_top = -233.155
+offset_right = 31.0
+offset_bottom = -183.155
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(9.465, 9.465)
+pivot_offset = Vector2(31, 24)
+texture = ExtResource("2_xs5te")
+stretch_mode = 5
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.987565, 0.15721, 0, -0.15721, 0.987565, 0, 0.0488495, 0.517805)
+fov = 56.4
+
+[node name="p1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, -0.694, -0.726)
+
+[node name="zombina" parent="p1" instance=ExtResource("3_xs5te")]
+transform = Transform3D(-1.5299e-08, 0, -0.35, 0, 0.35, 0, 0.35, 0, -1.5299e-08, 0, 0, 0)
+
+[node name="Skeleton3D" parent="p1/zombina/Armature" index="0"]
+bones/0/position = Vector3(-0.124195, 1.30953, -2.27556e-08)
+bones/1/rotation = Quaternion(-0.570106, -0.508826, 0.48814, 0.421657)
+bones/2/rotation = Quaternion(0.0372867, 0.000323084, -0.0136344, 0.999212)
+bones/3/position = Vector3(0.179864, 0.0593977, -0.0729557)
+bones/3/rotation = Quaternion(0.0818212, 0.655628, 0.14233, 0.737021)
+bones/4/rotation = Quaternion(0.0330385, -0.0109865, 0.463595, 0.885363)
+bones/5/position = Vector3(-4.95023e-09, 4.90053e-08, -2.78634e-08)
+bones/5/rotation = Quaternion(0.70873, -0.227326, -0.634227, 0.209236)
+bones/6/rotation = Quaternion(0.896081, 0.420103, 0.0608535, 0.129802)
+bones/7/rotation = Quaternion(-0.00826182, 0.164527, -0.536261, 0.82782)
+bones/8/rotation = Quaternion(-0.0843063, -0.11595, 0.800451, 0.582002)
+bones/9/rotation = Quaternion(-0.00942573, -0.0962941, 0.313861, 0.944526)
+bones/10/rotation = Quaternion(1.48449e-08, -1.37055e-07, 0.146783, 0.989169)
+
+[node name="AnimationPlayer" parent="p1/zombina" index="1"]
+autoplay = "run"
+
+[node name="p2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, -0.694, -0.726)
+
+[node name="johnny" parent="p2" instance=ExtResource("2_15se8")]
+transform = Transform3D(-1.5299e-08, 0, -0.35, 0, 0.35, 0, 0.35, 0, -1.5299e-08, 0, 0, 0)
+
+[node name="Skeleton3D" parent="p2/johnny/Armature" index="0"]
+bones/0/position = Vector3(-0.124195, 1.30953, -2.27556e-08)
+bones/1/rotation = Quaternion(-0.570106, -0.508826, 0.48814, 0.421657)
+bones/2/rotation = Quaternion(0.0372867, 0.000323084, -0.0136344, 0.999212)
+bones/3/position = Vector3(0.179864, 0.0593977, -0.0729557)
+bones/3/rotation = Quaternion(0.0818212, 0.655628, 0.14233, 0.737021)
+bones/4/rotation = Quaternion(0.0330385, -0.0109865, 0.463595, 0.885363)
+bones/5/position = Vector3(-4.95023e-09, 4.90053e-08, -2.78634e-08)
+bones/5/rotation = Quaternion(0.70873, -0.227326, -0.634227, 0.209236)
+bones/6/rotation = Quaternion(0.896081, 0.420103, 0.0608535, 0.129802)
+bones/7/rotation = Quaternion(-0.00826182, 0.164527, -0.536261, 0.82782)
+bones/8/rotation = Quaternion(-0.0843063, -0.11595, 0.800451, 0.582002)
+bones/9/rotation = Quaternion(-0.00942573, -0.0962941, 0.313861, 0.944526)
+bones/10/rotation = Quaternion(1.48449e-08, -1.37055e-07, 0.146783, 0.989169)
+
+[node name="AnimationPlayer" parent="p2/johnny" index="1"]
+autoplay = "run"
+
+[editable path="p1/zombina"]
+[editable path="p2/johnny"]

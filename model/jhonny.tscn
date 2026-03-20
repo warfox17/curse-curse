@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://d37qppy58jf04"]
+
+[ext_resource type="PackedScene" uid="uid://bugyngmu6s0eo" path="res://model/zombina.blend" id="1_4d4tk"]
+[ext_resource type="Texture2D" uid="uid://clfs8egxn4ce0" path="res://model/textures/zombina.png" id="2_c0hus"]
+[ext_resource type="PackedScene" uid="uid://dg0kl5pvvnpse" path="res://model/johnny.blend" id="3_c0hus"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4dad1"]
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("2_c0hus")
+texture_filter = 0
+
+[node name="zombina" instance=ExtResource("1_4d4tk")]
+
+[node name="chibi" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4dad1")
+
+[node name="johnny" parent="." index="2" instance=ExtResource("3_c0hus")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.112458, 1.19209e-07, 0.572167)

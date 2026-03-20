@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://hdiknnxvsena"]
+
+[ext_resource type="Script" uid="uid://dfma8xhbymqlv" path="res://scripts/curses_perk/bear_curse.gd" id="1_cs2pm"]
+[ext_resource type="Texture2D" uid="uid://c6b47pgltti6u" path="res://textures/curses/bear.png" id="2_5262r"]
+[ext_resource type="AudioStream" uid="uid://tid21ash1ga" path="res://sounds/curses/punishment.ogg" id="3_5262r"]
+
+[node name="bear_curse" type="Node"]
+script = ExtResource("1_cs2pm")
+icon_ = ExtResource("2_5262r")
+name_ = "bear curse"
+downside = "this bear will show you how much he loves destruction at every trap that is innescated"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_5262r")
+volume_db = -10.307

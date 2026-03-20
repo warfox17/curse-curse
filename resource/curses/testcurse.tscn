@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwtpnp5gsptxk"]
+
+[ext_resource type="Script" uid="uid://c7plegmna0cuw" path="res://scripts/curses/testcurse.gd" id="1_sum57"]
+[ext_resource type="Texture2D" uid="uid://dh81fsu7yatry" path="res://icon.svg" id="2_h2oo5"]
+
+[node name="Testcurse" type="Node"]
+script = ExtResource("1_sum57")
+icon_ = ExtResource("2_h2oo5")
+name_ = "testcurse"
+downside = "hey hey hey"
+upside = "hey hey hey"

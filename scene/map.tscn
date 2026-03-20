@@ -1,0 +1,165 @@
+[gd_scene load_steps=19 format=3 uid="uid://bgwryqt85tgta"]
+
+[ext_resource type="Script" uid="uid://cnldknke74v7x" path="res://scripts/map.gd" id="1_rgtto"]
+[ext_resource type="Texture2D" uid="uid://fchf20b56yhb" path="res://textures/damage.png" id="2_bq37x"]
+[ext_resource type="PackedScene" uid="uid://d1g6vtufscw3o" path="res://model/ladder.blend" id="2_wpp1k"]
+[ext_resource type="PackedScene" uid="uid://b65orx3bahvis" path="res://model/trap.blend" id="3_h0nt1"]
+[ext_resource type="Texture2D" uid="uid://b5p17a4odr5y5" path="res://textures/health.png" id="3_jp76l"]
+[ext_resource type="Texture2D" uid="uid://b8epml0aq7j12" path="res://textures/dash.png" id="4_7ac5c"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wpp1k"]
+size = Vector3(2, 2.522, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h0nt1"]
+size = Vector3(2, 2.522, 0.149292)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rgtto"]
+size = Vector3(0.354492, 2.522, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nf54y"]
+size = Vector3(0.354492, 2.522, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8qxkh"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("2_bq37x")
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_0bc6k"]
+material = SubResource("StandardMaterial3D_8qxkh")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bq37x"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8vfk2"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("3_jp76l")
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_v66k7"]
+material = SubResource("StandardMaterial3D_8vfk2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44fbv"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("4_7ac5c")
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_l8r8p"]
+material = SubResource("StandardMaterial3D_44fbv")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4xw1d"]
+size = Vector3(1.6759, 2.01538, 1.6759)
+
+[node name="map" type="Node3D"]
+script = ExtResource("1_rgtto")
+
+[node name="door1" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.19442)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1925, -0.901367)
+shape = SubResource("BoxShape3D_wpp1k")
+
+[node name="door2" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.15235)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1925, 0.925354)
+shape = SubResource("BoxShape3D_h0nt1")
+
+[node name="door3" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.822754, 1.1925, 0)
+shape = SubResource("BoxShape3D_rgtto")
+
+[node name="door4" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2432, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1925, 0)
+shape = SubResource("BoxShape3D_nf54y")
+
+[node name="things" type="Node3D" parent="."]
+
+[node name="shop" type="Node3D" parent="things"]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="things/shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.22065, 0.662239, 0)
+mesh = SubResource("PlaneMesh_0bc6k")
+skeleton = NodePath("../../..")
+
+[node name="object1" type="Area3D" parent="things/shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.11214, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="things/shop/object1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10673, 0.669063, -0.00391483)
+shape = SubResource("BoxShape3D_bq37x")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="things/shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0144184, 0.662239, 0)
+mesh = SubResource("PlaneMesh_v66k7")
+skeleton = NodePath("../../..")
+
+[node name="object2" type="Area3D" parent="things/shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0940864, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="things/shop/object2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10673, 0.669063, -0.00391483)
+shape = SubResource("BoxShape3D_bq37x")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="things/shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92086, 0.662239, 0)
+mesh = SubResource("PlaneMesh_l8r8p")
+skeleton = NodePath("../../..")
+
+[node name="object3" type="Area3D" parent="things/shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02937, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="things/shop/object3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10673, 0.669063, -0.00391483)
+shape = SubResource("BoxShape3D_bq37x")
+
+[node name="Label3D" type="Label3D" parent="things/shop"]
+transform = Transform3D(1, 0, 0, 0, 0.0837996, 0.996483, 0, -0.996483, 0.0837996, 0, 0, -1.96023)
+modulate = Color(5.72756e-06, 0.615319, 7.70092e-07, 1)
+outline_modulate = Color(0.513726, 0, 1, 1)
+text = "upgrades at 100 coins"
+font_size = 167
+
+[node name="trap" type="Node3D" parent="things"]
+process_mode = 4
+visible = false
+
+[node name="Area1" type="Area3D" parent="things/trap"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="things/trap/Area1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0440063, 0.783539, 0.112396)
+shape = SubResource("BoxShape3D_bq37x")
+
+[node name="trap" parent="things/trap" instance=ExtResource("3_h0nt1")]
+
+[node name="stairs" type="Node3D" parent="things"]
+visible = false
+
+[node name="ladder" parent="things/stairs" instance=ExtResource("2_wpp1k")]
+transform = Transform3D(-2.53848e-08, -9.49099e-09, 0.62, -0.217129, 0.580737, 0, -0.580737, -0.217129, -2.71011e-08, 0, 0, 0.627103)
+
+[node name="Area3D" type="Area3D" parent="things/stairs"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="things/stairs/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0215454, 0.979126, -0.00384521)
+shape = SubResource("BoxShape3D_4xw1d")
+
+[connection signal="body_entered" from="door1" to="." method="_on_door_1_body_entered"]
+[connection signal="body_entered" from="door2" to="." method="_on_door_2_body_entered"]
+[connection signal="body_entered" from="door3" to="." method="_on_door_3_body_entered"]
+[connection signal="body_entered" from="door4" to="." method="_on_door_4_body_entered"]
+[connection signal="body_entered" from="things/shop/object1" to="." method="_on_object_1_body_entered"]
+[connection signal="body_entered" from="things/shop/object2" to="." method="_on_object_2_body_entered"]
+[connection signal="body_entered" from="things/shop/object3" to="." method="_on_object_3_body_entered"]
+[connection signal="body_entered" from="things/trap/Area1" to="." method="_on_area_1_body_entered"]
+[connection signal="body_entered" from="things/stairs/Area3D" to="." method="_on_area_3d_body_entered"]

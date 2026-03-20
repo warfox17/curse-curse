@@ -1,0 +1,871 @@
+[gd_scene load_steps=35 format=3 uid="uid://c4wcce8ehcrto"]
+
+[ext_resource type="PackedScene" uid="uid://q3pwxlcmjuu" path="res://scene/player.tscn" id="1_pjass"]
+[ext_resource type="Script" uid="uid://cfryfaaaqrf1r" path="res://scripts/dungeon.gd" id="1_w4qq1"]
+[ext_resource type="PackedScene" uid="uid://bgwryqt85tgta" path="res://scene/map.tscn" id="3_m5mgf"]
+[ext_resource type="PackedScene" uid="uid://cg7kqpvh2y6bl" path="res://model/zombina.tscn" id="3_yur6x"]
+[ext_resource type="Texture2D" uid="uid://diyckg2xcxo8i" path="res://textures/room.png" id="4_m5mgf"]
+[ext_resource type="PackedScene" uid="uid://bqqyvat0wsqw5" path="res://model/johnny.tscn" id="4_y3jn2"]
+[ext_resource type="Script" uid="uid://do16ampg80os3" path="res://scripts/end_level_choice.gd" id="5_emkrx"]
+[ext_resource type="Texture2D" uid="uid://bt5r0pfufgex6" path="res://textures/lives.png" id="7_yur6x"]
+[ext_resource type="FontFile" uid="uid://c1mv4iadoh0m5" path="res://fonts/yoster.ttf" id="8_7ghph"]
+[ext_resource type="Texture2D" uid="uid://yfvyb5iadyec" path="res://textures/cross.png" id="8_y3jn2"]
+[ext_resource type="AudioStream" uid="uid://4c8oy68dfmle" path="res://sounds/music/the dungeon.mp3" id="11_na5tu"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_y3jn2"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yur6x"]
+animation = &"shoot"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7ghph"]
+animation = &"hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_na5tu"]
+animation = &"stand"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_jsnws"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_f345f"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_bqa5m"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_a0bac"]
+graph_offset = Vector2(-592.952, 82.9668)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_na5tu")
+nodes/Animation/position = Vector2(-400, 140)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_y3jn2")
+"nodes/Animation 2/position" = Vector2(-380, 300)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_yur6x")
+"nodes/Animation 3/position" = Vector2(-360, 480)
+"nodes/Animation 4/node" = SubResource("AnimationNodeAnimation_7ghph")
+"nodes/Animation 4/position" = Vector2(-40, 480)
+nodes/Blend2/node = SubResource("AnimationNodeBlend2_f345f")
+nodes/Blend2/position = Vector2(-200, 160)
+"nodes/Blend2 2/node" = SubResource("AnimationNodeBlend2_jsnws")
+"nodes/Blend2 2/position" = Vector2(0, 160)
+"nodes/OneShot 2/node" = SubResource("AnimationNodeOneShot_bqa5m")
+"nodes/OneShot 2/position" = Vector2(200, 120)
+nodes/output/position = Vector2(440, 140)
+node_connections = [&"Blend2", 0, &"Animation", &"Blend2", 1, &"Animation 2", &"Blend2 2", 0, &"Blend2", &"Blend2 2", 1, &"Animation 3", &"OneShot 2", 0, &"Blend2 2", &"OneShot 2", 1, &"Animation 4", &"output", 0, &"OneShot 2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0tg4p"]
+font = ExtResource("8_7ghph")
+font_size = 32
+font_color = Color(0.47451, 1, 0.25098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hcb8y"]
+font = ExtResource("8_7ghph")
+font_size = 32
+font_color = Color(0.47451, 1, 0.25098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jsnws"]
+font = ExtResource("8_7ghph")
+font_size = 25
+font_color = Color(1, 0, 0, 1)
+outline_size = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_y3jn2"]
+font = ExtResource("8_7ghph")
+font_size = 32
+font_color = Color(1, 0.263668, 0.963391, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_na5tu"]
+font = ExtResource("8_7ghph")
+font_size = 22
+
+[sub_resource type="GDScript" id="GDScript_y3jn2"]
+script/source = "extends ColorRect
+
+var buffer
+var selection = 0
+var picks = 2
+
+func _process(delta: float) -> void:
+	if (!Input.is_action_pressed(\"controller_left_left1\") and !Input.is_action_pressed(\"controller_left_right1\")) and buffer:
+		selection += buffer
+		buffer = null
+	if Input.is_action_pressed(\"controller_left_left1\"):
+		buffer = -1
+	elif Input.is_action_pressed(\"controller_left_right1\"):
+		buffer = 1
+	if selection > picks -1:
+		selection = 0
+	elif selection < 0:
+		selection = picks -1
+	for n in $VBoxContainer/HBoxContainer.get_child_count():
+		if n == selection:
+			$VBoxContainer/HBoxContainer.get_child(n).modulate = Color(1,1,1,1)
+		else:
+			$VBoxContainer/HBoxContainer.get_child(n).modulate = Color(1,1,1,0.2)
+	if Input.is_action_just_released(\"shoot1\"):
+		if selection == 0:
+			get_tree().reload_current_scene()
+		else:
+			get_tree().paused = false
+			get_tree().change_scene_to_file(\"res://scene/menu.tscn\")
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_w4qq1"]
+font = ExtResource("8_7ghph")
+font_size = 76
+font_color = Color(1, 1, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_m5mgf"]
+font = ExtResource("8_7ghph")
+font_size = 76
+
+[sub_resource type="LabelSettings" id="LabelSettings_emkrx"]
+font = ExtResource("8_7ghph")
+font_size = 76
+font_color = Color(1, 0.423529, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yur6x"]
+font_size = 31
+font_color = Color(0.407843, 0.717647, 1, 1)
+outline_size = 8
+outline_color = Color(0.419608, 0, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7ghph"]
+font_size = 31
+font_color = Color(0.407843, 0.717647, 1, 1)
+outline_size = 8
+outline_color = Color(0.419608, 0, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pjass"]
+size = Vector3(26.2077, 6.73254, 1.89801)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_txmk2"]
+size = Vector3(26.2077, 6.73254, 1.93826)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m5mgf"]
+size = Vector3(35.6464, 6.73254, 1.93826)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w4qq1"]
+size = Vector3(26.2077, 6.73254, 2.78796)
+
+[node name="world" type="Node3D"]
+script = ExtResource("1_w4qq1")
+
+[node name="player1" parent="." instance=ExtResource("1_pjass")]
+
+[node name="zombina" parent="player1/ratational/mesh" index="0" instance=ExtResource("3_yur6x")]
+
+[node name="Skeleton3D" parent="player1/ratational/mesh/zombina/Armature" index="0"]
+bones/0/position = Vector3(-0.124195, 1.31719, -1.76809e-08)
+bones/0/rotation = Quaternion(0.653049, -0.357075, -0.583303, -0.325242)
+bones/1/position = Vector3(-0.160961, 0.0565757, -0.109966)
+bones/1/rotation = Quaternion(-0.374695, -0.662662, 0.305178, 0.572144)
+bones/2/rotation = Quaternion(0.0372901, -3.28038e-08, 2.54492e-08, 0.999304)
+bones/3/position = Vector3(0.179864, 0.0593976, -0.0729555)
+bones/3/rotation = Quaternion(-0.345003, 0.59392, -0.339123, 0.642828)
+bones/4/rotation = Quaternion(0.0372902, 9.3999e-08, -3.62238e-08, 0.999304)
+bones/5/position = Vector3(-0.00322231, -0.0197694, 0.0311818)
+bones/6/rotation = Quaternion(0.989671, 2.01018e-08, -1.68445e-07, 0.143358)
+bones/7/rotation = Quaternion(-0.00997933, 7.54418e-08, 3.84643e-09, 0.99995)
+bones/8/rotation = Quaternion(-2.97389e-07, -0.143359, 0.989671, -2.79126e-08)
+bones/9/rotation = Quaternion(-0.00997929, -1.07151e-07, -3.46084e-08, 0.99995)
+bones/10/rotation = Quaternion(1.86264e-08, -1.61554e-07, -8.13311e-09, 1)
+
+[node name="AnimationPlayer" parent="player1/ratational/mesh/zombina" index="1"]
+autoplay = "stand"
+
+[node name="AnimationTree" parent="player1" index="5"]
+root_node = NodePath("../ratational/mesh/zombina")
+tree_root = SubResource("AnimationNodeBlendTree_a0bac")
+anim_player = NodePath("../ratational/mesh/zombina/AnimationPlayer")
+parameters/Blend2/blend_amount = 0.0
+"parameters/Blend2 2/blend_amount" = 0.0
+"parameters/OneShot 2/active" = false
+"parameters/OneShot 2/internal_active" = false
+"parameters/OneShot 2/request" = 0
+
+[node name="player2" parent="." instance=ExtResource("1_pjass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
+player_id = "2"
+
+[node name="johnny" parent="player2/ratational/mesh" index="0" instance=ExtResource("4_y3jn2")]
+
+[node name="Skeleton3D" parent="player2/ratational/mesh/johnny/Armature" index="0"]
+bones/0/position = Vector3(-0.124195, 1.31719, -1.76809e-08)
+bones/0/rotation = Quaternion(0.653049, -0.357075, -0.583303, -0.325242)
+bones/1/position = Vector3(-0.160961, 0.0565757, -0.109966)
+bones/1/rotation = Quaternion(-0.374695, -0.662662, 0.305178, 0.572144)
+bones/2/rotation = Quaternion(0.0372901, -3.28038e-08, 2.54492e-08, 0.999304)
+bones/3/position = Vector3(0.179864, 0.0593976, -0.0729555)
+bones/3/rotation = Quaternion(-0.345003, 0.59392, -0.339123, 0.642828)
+bones/4/rotation = Quaternion(0.0372902, 9.3999e-08, -3.62238e-08, 0.999304)
+bones/5/position = Vector3(-0.00322486, -0.019785, 0.0312064)
+bones/5/rotation = Quaternion(0.653049, -0.357075, -0.583303, 0.325241)
+bones/6/rotation = Quaternion(0.989671, 2.01018e-08, -1.68445e-07, 0.143358)
+bones/7/rotation = Quaternion(-0.00997933, 7.54418e-08, 3.84643e-09, 0.99995)
+bones/8/rotation = Quaternion(-2.97389e-07, -0.143359, 0.989671, -2.79126e-08)
+bones/9/rotation = Quaternion(-0.00997929, -1.07151e-07, -3.46084e-08, 0.99995)
+bones/10/rotation = Quaternion(1.86264e-08, -1.61554e-07, -8.13311e-09, 1)
+
+[node name="AnimationTree" parent="player2" index="5"]
+root_node = NodePath("../ratational/mesh/johnny")
+tree_root = SubResource("AnimationNodeBlendTree_a0bac")
+anim_player = NodePath("../ratational/mesh/johnny/AnimationPlayer")
+parameters/Blend2/blend_amount = 0
+"parameters/Blend2 2/blend_amount" = 0
+"parameters/OneShot 2/active" = false
+"parameters/OneShot 2/internal_active" = false
+"parameters/OneShot 2/request" = 0
+
+[node name="map1" parent="." instance=ExtResource("3_m5mgf")]
+
+[node name="map2" parent="." instance=ExtResource("3_m5mgf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
+id = "2"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_right = 960.0
+offset_bottom = 540.0
+texture = ExtResource("4_m5mgf")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -960.0
+offset_top = -540.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("4_m5mgf")
+expand_mode = 1
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Control"]
+layout_mode = 2
+offset_right = 960.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+stretch = true
+stretch_shrink = 2
+
+[node name="SubViewport" type="SubViewport" parent="Control/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(480, 270)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Control/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 11.095, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Control/SubViewportContainer/SubViewport/Camera3D"]
+spot_range = 38.7094
+spot_attenuation = 0.05
+spot_angle = 60.43
+
+[node name="SubViewportContainer2" type="SubViewportContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -960.0
+offset_top = -540.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+stretch = true
+stretch_shrink = 2
+
+[node name="SubViewport" type="SubViewport" parent="Control/SubViewportContainer2"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(480, 270)
+render_target_update_mode = 4
+
+[node name="Camera3D2" type="Camera3D" parent="Control/SubViewportContainer2/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.0934677, 11.095, 16.7942)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Control/SubViewportContainer2/SubViewport/Camera3D2"]
+spot_range = 38.7094
+spot_attenuation = 0.05
+spot_angle = 60.43
+
+[node name="lives_ui1" type="TextureProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 227.515
+offset_top = 11.0
+offset_right = 427.515
+offset_bottom = 51.0
+grow_vertical = 2
+max_value = 5.0
+value = 5.0
+nine_patch_stretch = true
+texture_progress = ExtResource("7_yur6x")
+
+[node name="lives_ui2" type="TextureProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -386.73
+offset_top = -91.655
+offset_right = -186.73
+offset_bottom = -51.655
+grow_horizontal = 0
+grow_vertical = 2
+max_value = 5.0
+value = 5.0
+fill_mode = 1
+nine_patch_stretch = true
+texture_progress = ExtResource("7_yur6x")
+
+[node name="money1" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 41.365
+offset_top = 117.31
+offset_right = 429.365
+offset_bottom = 144.31
+grow_vertical = 2
+text = "0"
+label_settings = SubResource("LabelSettings_0tg4p")
+horizontal_alignment = 2
+
+[node name="money2" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -388.0
+offset_top = -133.815
+offset_bottom = -106.815
+grow_horizontal = 0
+grow_vertical = 2
+text = "0"
+label_settings = SubResource("LabelSettings_hcb8y")
+
+[node name="health_ui1" type="ProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 41.365
+offset_top = 70.355
+offset_right = 429.365
+offset_bottom = 97.355
+grow_vertical = 2
+max_value = 30.0
+value = 30.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Control/health_ui1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "30/30"
+label_settings = SubResource("LabelSettings_jsnws")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="health_ui2" type="ProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -388.0
+offset_top = -43.385
+offset_bottom = -16.385
+grow_horizontal = 0
+grow_vertical = 2
+max_value = 30.0
+value = 30.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Control/health_ui2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "30/30"
+label_settings = SubResource("LabelSettings_jsnws")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="name2" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -388.0
+offset_top = -190.005
+offset_bottom = -145.005
+grow_horizontal = 0
+grow_vertical = 2
+text = "Johhny o'cult"
+label_settings = SubResource("LabelSettings_y3jn2")
+
+[node name="name1" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 42.43
+offset_top = 156.385
+offset_right = 430.43
+offset_bottom = 201.385
+grow_vertical = 2
+text = "Zombina"
+label_settings = SubResource("LabelSettings_hcb8y")
+horizontal_alignment = 2
+
+[node name="map" type="HBoxContainer" parent="Control"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -58.0
+offset_top = -58.0
+offset_right = 58.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Control/map"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control/map/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Control/map/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="Control/map/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="Control/map/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="Control/map/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="Control/map"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control/map/HBoxContainer2"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Control/map/HBoxContainer2"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="Control/map/HBoxContainer2"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="Control/map/HBoxContainer2"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="Control/map/HBoxContainer2"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer3" type="VBoxContainer" parent="Control/map"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control/map/HBoxContainer3"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Control/map/HBoxContainer3"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="Control/map/HBoxContainer3"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0.721, 0.333, 0.827, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="Control/map/HBoxContainer3"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="Control/map/HBoxContainer3"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer4" type="VBoxContainer" parent="Control/map"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control/map/HBoxContainer4"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Control/map/HBoxContainer4"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="Control/map/HBoxContainer4"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="Control/map/HBoxContainer4"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="Control/map/HBoxContainer4"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer5" type="VBoxContainer" parent="Control/map"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control/map/HBoxContainer5"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Control/map/HBoxContainer5"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="Control/map/HBoxContainer5"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="Control/map/HBoxContainer5"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="Control/map/HBoxContainer5"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="curses1" type="GridContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 451.0
+offset_top = 31.0
+offset_right = 905.0
+offset_bottom = 515.0
+grow_vertical = 2
+columns = 3
+
+[node name="curses2" type="GridContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -852.365
+offset_top = -509.975
+offset_right = -398.365
+offset_bottom = -25.975
+grow_horizontal = 0
+grow_vertical = 2
+columns = 3
+
+[node name="end_level_choice1" type="ColorRect" parent="Control"]
+process_mode = 3
+visible = false
+z_index = 1
+layout_mode = 1
+offset_right = 960.0
+offset_bottom = 540.0
+color = Color(0.136, 0.002, 0.11, 0.475)
+script = ExtResource("5_emkrx")
+
+[node name="Label" type="Label" parent="Control/end_level_choice1"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -96.5
+offset_top = 15.65
+offset_right = 96.5
+offset_bottom = 38.65
+grow_horizontal = 2
+text = "curse the enemy"
+label_settings = SubResource("LabelSettings_na5tu")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/end_level_choice1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Control/end_level_choice1"]
+modulate = Color(1, 1, 1, 0.647059)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -97.01
+offset_top = -100.545
+offset_right = 30.99
+offset_bottom = 27.455
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("8_y3jn2")
+
+[node name="end_level_choice2" type="ColorRect" parent="Control"]
+process_mode = 3
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -960.0
+offset_top = -540.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(0.136, 0.002, 0.11, 0.475)
+script = ExtResource("5_emkrx")
+id = "2"
+
+[node name="Label" type="Label" parent="Control/end_level_choice2"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -96.5
+offset_top = 15.905
+offset_right = 96.5
+offset_bottom = 38.905
+grow_horizontal = 2
+text = "curse the enemy"
+label_settings = SubResource("LabelSettings_na5tu")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/end_level_choice2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Control/end_level_choice2"]
+modulate = Color(1, 1, 1, 0.647059)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -89.57
+offset_top = -96.31
+offset_right = 38.43
+offset_bottom = 31.69
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("8_y3jn2")
+
+[node name="death_screen" type="ColorRect" parent="Control"]
+process_mode = 4
+visible = false
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.112976, 0.0238262, 0.177856, 1)
+script = SubResource("GDScript_y3jn2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/death_screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Control/death_screen/VBoxContainer"]
+layout_mode = 2
+text = "Zombina"
+label_settings = SubResource("LabelSettings_w4qq1")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Control/death_screen/VBoxContainer"]
+layout_mode = 2
+text = "WON! GREAT JOB"
+label_settings = SubResource("LabelSettings_m5mgf")
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="Control/death_screen/VBoxContainer"]
+layout_mode = 2
+text = "Johnny o-cult"
+label_settings = SubResource("LabelSettings_emkrx")
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="Control/death_screen/VBoxContainer"]
+layout_mode = 2
+text = "get better man"
+label_settings = SubResource("LabelSettings_m5mgf")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/death_screen/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Label" parent="Control/death_screen/VBoxContainer/HBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(254.875, 77.28)
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+text = "let's do 
+it agan"
+label_settings = SubResource("LabelSettings_yur6x")
+horizontal_alignment = 1
+
+[node name="Button2" type="Label" parent="Control/death_screen/VBoxContainer/HBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(254.875, 77.28)
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+text = "nah man 
+take me back"
+label_settings = SubResource("LabelSettings_7ghph")
+horizontal_alignment = 1
+
+[node name="projectiles1" type="Node3D" parent="."]
+
+[node name="projectiles2" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 11
+collision_mask = 11
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00956726, 2.86627, -8.03904)
+shape = SubResource("BoxShape3D_pjass")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00956726, 2.86627, 25.0956)
+shape = SubResource("BoxShape3D_txmk2")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.297, 2.86627, 8.53945)
+shape = SubResource("BoxShape3D_m5mgf")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 13.4246, 2.86627, 8.53945)
+shape = SubResource("BoxShape3D_m5mgf")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00956726, 2.86627, 8.4544)
+shape = SubResource("BoxShape3D_w4qq1")
+
+[node name="enemies1" type="Node3D" parent="."]
+
+[node name="enemies2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_na5tu")
+volume_db = -2.811
+autoplay = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 4.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+
+[editable path="player1"]
+[editable path="player1/ratational/mesh/zombina"]
+[editable path="player2"]
+[editable path="player2/ratational/mesh/johnny"]

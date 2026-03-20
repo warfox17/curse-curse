@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://tiycotca2swt"]
+
+[ext_resource type="FontFile" uid="uid://c1mv4iadoh0m5" path="res://fonts/yoster.ttf" id="1_aw0x3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_m01mf"]
+font = ExtResource("1_aw0x3")
+font_size = 61
+font_color = Color(0.956863, 0.894118, 0.25098, 1)
+shadow_size = 10
+shadow_color = Color(0, 0, 0, 0.6)
+
+[node name="Control" type="Label"]
+self_modulate = Color(1, 1, 1, 0.701961)
+z_index = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 1.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+label_settings = SubResource("LabelSettings_m01mf")

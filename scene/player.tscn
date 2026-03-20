@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://q3pwxlcmjuu"]
+
+[ext_resource type="Script" uid="uid://dydn6dyqfqdf0" path="res://scripts/player.gd" id="1_xo3ru"]
+[ext_resource type="Script" uid="uid://qbln0w4xjm2x" path="res://scripts/health_manager.gd" id="2_hjaqi"]
+[ext_resource type="AnimationRootNode" uid="uid://c2rek66sqdnq1" path="res://resource/playertree.tres" id="4_ct4mp"]
+[ext_resource type="AudioStream" uid="uid://bbr673sumqrf8" path="res://sounds/curse.ogg" id="5_s4jxa"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w4qq1"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" groups=["player"]]
+collision_mask = 9
+script = ExtResource("1_xo3ru")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.993261, 0)
+shape = SubResource("CapsuleShape3D_w4qq1")
+
+[node name="ratational" type="Node3D" parent="."]
+
+[node name="Marker3D" type="Marker3D" parent="ratational"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.914222, 1.32025, 0)
+
+[node name="mesh" type="Node3D" parent="ratational"]
+
+[node name="curse_holder" type="Node" parent="."]
+
+[node name="health" type="Node" parent="."]
+script = ExtResource("2_hjaqi")
+max_health = 30
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_s4jxa")
+volume_db = -20.613
+pitch_scale = 1.58
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = ExtResource("4_ct4mp")
+
+[connection signal="healthchange" from="health" to="." method="_on_health_healthchange"]

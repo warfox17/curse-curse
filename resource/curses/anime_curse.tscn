@@ -1,0 +1,70 @@
+[gd_scene load_steps=10 format=3 uid="uid://da5fcdc4xaybe"]
+
+[ext_resource type="Script" uid="uid://bmew0be7bxiyr" path="res://scripts/curses_perk/anime_curse.gd" id="1_akem7"]
+[ext_resource type="Texture2D" uid="uid://dlpcupb6r6ic" path="res://textures/curses/anime_curse.png" id="2_3e2wt"]
+[ext_resource type="Texture2D" uid="uid://cou0xvjq7a4g6" path="res://textures/anime/bakaanimeframe1.png" id="2_dc025"]
+[ext_resource type="Texture2D" uid="uid://bl0s8xag83q4m" path="res://textures/anime/bakaanimeframe2.png" id="3_cdvxt"]
+[ext_resource type="Texture2D" uid="uid://tfcfnfnf6qdg" path="res://textures/anime/bikeanimeframe1.png" id="5_ec0ns"]
+[ext_resource type="Texture2D" uid="uid://b3ub50w83mkft" path="res://textures/anime/bikeanimeframe2.png" id="6_3e2wt"]
+[ext_resource type="Texture2D" uid="uid://wihnbg53iew5" path="res://textures/anime/bikeanimeframe3.png" id="7_vorw6"]
+[ext_resource type="AudioStream" uid="uid://b5y84rdwu6r2x" path="res://sounds/curses/kabuki1.ogg" id="8_3e2wt"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7guey"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_dc025")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_cdvxt")
+}],
+"loop": true,
+"name": &"baka",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.6,
+"texture": ExtResource("5_ec0ns")
+}, {
+"duration": 0.4,
+"texture": ExtResource("6_3e2wt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_vorw6")
+}],
+"loop": true,
+"name": &"bike",
+"speed": 3.0
+}]
+
+[node name="anime" type="Node"]
+script = ExtResource("1_akem7")
+icon_ = ExtResource("2_3e2wt")
+name_ = "anime curse"
+downside = "this specific anime gained sentience just becase of how bad it was, it now curses people with it's terrible animations"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 7.0
+autostart = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+z_index = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TextureRect"]
+position = Vector2(960, 540)
+scale = Vector2(0.25, 0.25)
+sprite_frames = SubResource("SpriteFrames_7guey")
+animation = &"bike"
+frame_progress = 0.913336
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_3e2wt")
+volume_db = -10.306
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

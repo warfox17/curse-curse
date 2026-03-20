@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://cg7kqpvh2y6bl"]
+
+[ext_resource type="PackedScene" uid="uid://bugyngmu6s0eo" path="res://model/zombina.blend" id="1_uyrio"]
+[ext_resource type="Texture2D" uid="uid://clfs8egxn4ce0" path="res://model/textures/zombina.png" id="2_fyp35"]
+[ext_resource type="AnimationLibrary" uid="uid://bykfrr0u8uxto" path="res://anim/player_animations.res" id="3_4dad1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4dad1"]
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("2_fyp35")
+texture_filter = 0
+
+[node name="zombina" instance=ExtResource("1_uyrio")]
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/0/position = Vector3(-0.124195, 1.43525, -1.71713e-08)
+bones/0/rotation = Quaternion(0.653049, -0.357075, -0.583303, -0.325242)
+bones/1/position = Vector3(-0.160961, 0.0565756, -0.109966)
+bones/1/rotation = Quaternion(-0.297585, -0.477349, 0.447252, 0.695375)
+bones/2/rotation = Quaternion(-0.103547, 0.0691499, 0.0910648, 0.98803)
+bones/3/position = Vector3(0.179864, 0.0593976, -0.0729556)
+bones/3/rotation = Quaternion(-0.482987, 0.493085, -0.501054, 0.522049)
+bones/4/rotation = Quaternion(0.036143, -0.00583129, 0.246064, 0.968562)
+bones/5/position = Vector3(-1.85494e-08, 1.59499e-08, -5.02261e-08)
+bones/6/rotation = Quaternion(0.958199, -0.0930159, 0.179823, 0.202156)
+bones/7/rotation = Quaternion(-0.262265, 6.99329e-08, 1.02696e-07, 0.964996)
+bones/8/rotation = Quaternion(-2.6744e-07, -0.365801, 0.930693, 1.31862e-08)
+bones/9/rotation = Quaternion(0.11237, 0.00380016, 0.19218, 0.974898)
+bones/10/rotation = Quaternion(-5.33838e-09, -1.28651e-07, 0.147085, 0.989124)
+
+[node name="chibi" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4dad1")
+
+[node name="AnimationPlayer" parent="." index="1"]
+libraries = {
+&"": ExtResource("3_4dad1")
+}

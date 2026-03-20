@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://x7nm4c5ybcdd"]
+
+[ext_resource type="Script" uid="uid://s2gcbtbvbetp" path="res://scripts/curses_perk/curse_of_finger.gd" id="1_4fd0r"]
+[ext_resource type="Texture2D" uid="uid://btwmyxfvxfd6w" path="res://textures/curses/feedback.png" id="2_4fd0r"]
+
+[node name="rico" type="Node"]
+script = ExtResource("1_4fd0r")
+icon_ = ExtResource("2_4fd0r")
+name_ = "feedback"
+downside = "your shots bounce against walls to hurt you"

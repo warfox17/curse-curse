@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bc0tc45mau3ly"]
+
+[ext_resource type="Script" uid="uid://knt7mlp1k0a3" path="res://scripts/curses_perk/puppet_attack.gd" id="1_rig8l"]
+[ext_resource type="Texture2D" uid="uid://u55esfau3mmd" path="res://textures/curses/puppet_attack.png" id="2_rig8l"]
+
+[node name="puppet plague" type="Node"]
+script = ExtResource("1_rig8l")
+icon_ = ExtResource("2_rig8l")
+name_ = "puppet attack"
+downside = "three angry puppets chase after you everytime the enemy triggers a trap"

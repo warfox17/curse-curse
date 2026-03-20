@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://45m6ialmcxvd"]
+
+[ext_resource type="Script" uid="uid://bi6nmfh0n7i8s" path="res://scripts/curses_perk/curse_of_necromancy.gd" id="1_i46ru"]
+[ext_resource type="Texture2D" uid="uid://mslj4bdut2j3" path="res://textures/curses/necromancy.png" id="2_i46ru"]
+[ext_resource type="AudioStream" uid="uid://ch50qkqvdqisg" path="res://sounds/curses/zombie.ogg" id="3_jb3mh"]
+
+[node name="necro" type="Node"]
+script = ExtResource("1_i46ru")
+icon_ = ExtResource("2_i46ru")
+name_ = "curse of necromancy"
+downside = "the enemies killed by your opponent come back to hunt you(sometimes)"
+upside = "the new enemies still drop hearts and coins"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_jb3mh")
+volume_db = -12.18

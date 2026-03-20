@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dopk3pittedtn"]
+
+[ext_resource type="Script" uid="uid://s2gcbtbvbetp" path="res://scripts/curses_perk/curse_of_finger.gd" id="1_jsyep"]
+[ext_resource type="Texture2D" uid="uid://ctgntdiopviii" path="res://textures/curses/finger.png" id="2_jsyep"]
+
+[node name="finger" type="Node"]
+script = ExtResource("1_jsyep")
+icon_ = ExtResource("2_jsyep")
+name_ = "cursed finger"
+downside = "a part of your movement is controlled by your enemy"

@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://c75quid72nnte"]
+
+[ext_resource type="Script" uid="uid://dc832i1cnxx18" path="res://scripts/curses/hearth.gd" id="1_l0651"]
+[ext_resource type="PackedScene" uid="uid://dakkfr4dr1xp8" path="res://model/hearth.blend" id="2_rkebh"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qm2c2"]
+radius = 0.181003
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4gyyf"]
+
+[node name="heart" type="CharacterBody3D"]
+script = ExtResource("1_l0651")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_qm2c2")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_4gyyf")
+
+[node name="hearth" parent="." instance=ExtResource("2_rkebh")]
+transform = Transform3D(-0.0508365, 0.148017, -0.421908, 0.425598, 0.146171, -1.86035e-08, 0.137047, -0.39903, -0.156504, -0.305116, -0.132186, 0.868295)
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

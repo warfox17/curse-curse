@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpydighcquhxq"]
+
+[ext_resource type="Script" uid="uid://djinvplk1rw7t" path="res://scripts/curses_perk/puppet_plague.gd" id="1_2smc7"]
+[ext_resource type="Texture2D" uid="uid://c0ut56dns1was" path="res://textures/curses/puppet_plague.png" id="2_2smc7"]
+
+[node name="puppet plague" type="Node"]
+script = ExtResource("1_2smc7")
+icon_ = ExtResource("2_2smc7")
+name_ = "puppet plague"
+downside = "add a new enemy that can be controlled by yor enemy"
+upside = "the puppets have less health than other enemies"

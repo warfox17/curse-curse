@@ -1,0 +1,74 @@
+[gd_scene load_steps=9 format=3 uid="uid://cq1yqa5u76n3n"]
+
+[ext_resource type="Script" uid="uid://uwen0l4ad4jy" path="res://scene/dasher.gd" id="1_mwn2h"]
+[ext_resource type="Script" uid="uid://qbln0w4xjm2x" path="res://scripts/health_manager.gd" id="2_2rhhe"]
+[ext_resource type="PackedScene" uid="uid://dul7vpminqyve" path="res://model/dasher.blend" id="3_2rhhe"]
+[ext_resource type="Texture2D" uid="uid://c0cddgmm61rbt" path="res://model/textures/dasher.png" id="4_5xpgo"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vufel"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_h08p8"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f87vc"]
+radius = 0.701803
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qthgw"]
+shading_mode = 0
+albedo_texture = ExtResource("4_5xpgo")
+texture_filter = 0
+
+[node name="CharacterBody3D" type="CharacterBody3D" groups=["target"]]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_mwn2h")
+speed = 0.6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02157, 0)
+shape = SubResource("CapsuleShape3D_vufel")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02852, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_h08p8")
+
+[node name="health" type="Node" parent="."]
+script = ExtResource("2_2rhhe")
+max_health = 13
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02639, 0)
+shape = SubResource("CapsuleShape3D_f87vc")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.65
+autostart = true
+
+[node name="rot" type="Node3D" parent="."]
+
+[node name="dasher" parent="rot" instance=ExtResource("3_2rhhe")]
+transform = Transform3D(0.745, 0, 0, 0, 0.745, 0, 0, 0, 0.745, 0, 0, 0)
+
+[node name="Skeleton3D" parent="rot/dasher/Armature" index="0"]
+bones/0/position = Vector3(-0.124194, 1.30997, -4.30009e-09)
+bones/0/rotation = Quaternion(0.653049, -0.357075, -0.583303, -0.325242)
+bones/1/rotation = Quaternion(-0.673189, -0.353436, 0.588195, 0.275549)
+bones/3/rotation = Quaternion(-0.0393688, 0.667711, 0.00792974, 0.743337)
+bones/5/rotation = Quaternion(0.651719, -0.359497, -0.582092, 0.327404)
+bones/6/rotation = Quaternion(0.839217, 0.52456, 0.0759847, 0.121565)
+bones/7/rotation = Quaternion(-0.0094675, 0.0927337, -0.302257, 0.948658)
+bones/8/rotation = Quaternion(-0.0985887, -0.104076, 0.718493, 0.6806)
+bones/9/rotation = Quaternion(-0.00923812, -0.110978, 0.361725, 0.92561)
+
+[node name="chibi" parent="rot/dasher/Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_qthgw")
+
+[node name="AnimationPlayer" parent="rot/dasher" index="1"]
+autoplay = "run"
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+
+[editable path="rot/dasher"]

@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://ddvexvhpsav6o"]
+
+[ext_resource type="Script" uid="uid://bwwessqkdpg64" path="res://scripts/curses_perk/puppet.gd" id="1_hn88a"]
+[ext_resource type="Script" uid="uid://qbln0w4xjm2x" path="res://scripts/health_manager.gd" id="2_klakv"]
+[ext_resource type="PackedScene" uid="uid://ba8qicphujytm" path="res://model/base.blend" id="3_klakv"]
+[ext_resource type="AnimationLibrary" uid="uid://bykfrr0u8uxto" path="res://anim/player_animations.res" id="4_gs8d4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vufel"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f87vc"]
+radius = 0.701803
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gs8d4"]
+shading_mode = 0
+albedo_color = Color(0.581033, 0.581033, 0.581033, 1)
+
+[node name="CharacterBody3D" type="CharacterBody3D" groups=["target"]]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_hn88a")
+speed = 0.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02157, 0)
+shape = SubResource("CapsuleShape3D_vufel")
+
+[node name="health" type="Node" parent="."]
+script = ExtResource("2_klakv")
+max_health = 12
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02639, 0)
+shape = SubResource("CapsuleShape3D_f87vc")
+
+[node name="rot" type="Node3D" parent="."]
+
+[node name="base" parent="rot" instance=ExtResource("3_klakv")]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 0, 0, 0)
+
+[node name="Skeleton3D" parent="rot/base/Armature" index="0"]
+bones/0/position = Vector3(-0.124195, 1.30953, -2.27556e-08)
+bones/0/rotation = Quaternion(0.653049, -0.357075, -0.583303, -0.325242)
+bones/1/position = Vector3(-0.160961, 0.0565756, -0.109966)
+bones/1/rotation = Quaternion(-0.570106, -0.508826, 0.48814, 0.421657)
+bones/2/rotation = Quaternion(0.0372867, 0.000323084, -0.0136344, 0.999212)
+bones/3/position = Vector3(0.179864, 0.0593977, -0.0729557)
+bones/3/rotation = Quaternion(0.0818212, 0.655628, 0.14233, 0.737021)
+bones/4/rotation = Quaternion(0.0330385, -0.0109865, 0.463595, 0.885363)
+bones/5/position = Vector3(-4.95023e-09, 4.90053e-08, -2.78634e-08)
+bones/5/rotation = Quaternion(0.70873, -0.227326, -0.634227, 0.209236)
+bones/6/rotation = Quaternion(0.896081, 0.420103, 0.0608535, 0.129802)
+bones/7/rotation = Quaternion(-0.00826182, 0.164527, -0.536261, 0.82782)
+bones/8/rotation = Quaternion(-0.0843063, -0.11595, 0.800451, 0.582002)
+bones/9/rotation = Quaternion(-0.00942573, -0.0962941, 0.313861, 0.944526)
+bones/10/rotation = Quaternion(1.48449e-08, -1.37055e-07, 0.146783, 0.989169)
+
+[node name="chibi" parent="rot/base/Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_gs8d4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="rot/base"]
+libraries = {
+&"player_animations": ExtResource("4_gs8d4")
+}
+autoplay = "player_animations/run"
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+
+[editable path="rot/base"]

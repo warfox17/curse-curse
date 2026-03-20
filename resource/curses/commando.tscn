@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bdmtbifttjwbs"]
+
+[ext_resource type="Script" uid="uid://c7w3nbrq8gb4p" path="res://scripts/commando.gd" id="1_i8ify"]
+[ext_resource type="Texture2D" uid="uid://co57gnymp0hgy" path="res://textures/water.png" id="2_i8ify"]
+[ext_resource type="Texture2D" uid="uid://dmb37nr0hslve" path="res://textures/curses/commando.png" id="2_m0r15"]
+
+[node name="commando" type="Node"]
+script = ExtResource("1_i8ify")
+icon_ = ExtResource("2_m0r15")
+name_ = "commando"
+downside = "enemies get faster underwater"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color(1, 1, 1, 0.262745)
+z_index = 1
+offset_right = 960.0
+offset_bottom = 540.0
+texture = ExtResource("2_i8ify")

@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://ddt5fnl7clnym"]
+
+[ext_resource type="Script" uid="uid://dgydnsm6wiagv" path="res://scripts/enemy.gd" id="1_h08p8"]
+[ext_resource type="Script" uid="uid://qbln0w4xjm2x" path="res://scripts/health_manager.gd" id="2_f87vc"]
+[ext_resource type="PackedScene" uid="uid://byq88icux1k13" path="res://model/enemy.blend" id="3_8u16h"]
+[ext_resource type="Texture2D" uid="uid://y7gypm3fbd22" path="res://model/textures/enemy.png" id="4_b7koy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vufel"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f87vc"]
+radius = 0.701803
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yvcfn"]
+shading_mode = 0
+albedo_texture = ExtResource("4_b7koy")
+texture_filter = 0
+
+[node name="CharacterBody3D" type="CharacterBody3D" groups=["target"]]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_h08p8")
+speed = 1.4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02157, 0)
+shape = SubResource("CapsuleShape3D_vufel")
+
+[node name="health" type="Node" parent="."]
+script = ExtResource("2_f87vc")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02639, 0)
+shape = SubResource("CapsuleShape3D_f87vc")
+
+[node name="rot" type="Node3D" parent="."]
+
+[node name="enemy" parent="rot" instance=ExtResource("3_8u16h")]
+transform = Transform3D(0.73, 0, 0, 0, 0.73, 0, 0, 0, 0.73, 0, 0, 0)
+
+[node name="Skeleton3D" parent="rot/enemy/Armature" index="0"]
+bones/0/position = Vector3(-0.124195, 1.22935, -1.94708e-08)
+bones/0/rotation = Quaternion(0.653049, -0.357075, -0.583303, -0.325242)
+bones/1/rotation = Quaternion(-0.144869, -0.736986, 0.0950734, 0.653319)
+bones/3/rotation = Quaternion(-0.544407, 0.423135, -0.575082, 0.440293)
+bones/5/rotation = Quaternion(0.544438, -0.507507, -0.484733, 0.459411)
+bones/6/rotation = Quaternion(0.844652, -0.515764, -0.0747107, 0.122352)
+bones/7/rotation = Quaternion(-0.00946754, 0.0927337, -0.302257, 0.948658)
+bones/8/rotation = Quaternion(0.0696963, -0.125277, 0.864838, -0.481148)
+bones/9/rotation = Quaternion(-0.00923804, -0.110978, 0.361725, 0.92561)
+
+[node name="chibi" parent="rot/enemy/Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_yvcfn")
+
+[node name="AnimationPlayer" parent="rot/enemy" index="1"]
+autoplay = "run"
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+
+[editable path="rot/enemy"]
